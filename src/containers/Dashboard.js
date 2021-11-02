@@ -28,11 +28,8 @@ export const filteredBills = (data, status) => {
 
 export const card = (bill) => {
   const firstAndLastNames = bill.email.split('@')[0]
-  const firstName = firstAndLastNames.includes('.') ?
-    firstAndLastNames.split('.')[0] : ''
-  const lastName = firstAndLastNames.includes('.') ?
-  firstAndLastNames.split('.')[1] : firstAndLastNames
-
+  const firstName = firstAndLastNames.includes('.') ? firstAndLastNames.split('.')[0] : ''
+  const lastName = firstAndLastNames.includes('.') ? firstAndLastNames.split('.')[1] : firstAndLastNames
   return (`
     <div class='bill-card' id='open-bill${bill.id}' data-testid='open-bill${bill.id}'>
       <div class='bill-card-name-container'>
@@ -81,8 +78,11 @@ export default class {
   handleClickIconEye = () => {
     const billUrl = $('#icon-eye-d').attr("data-bill-url")
     const imgWidth = Math.floor($('#modaleFileAdmin1').width() * 0.8)
-    $('#modaleFileAdmin1').find(".modal-body").html(`<div style='text-align: center;'><img width=${imgWidth} src=${billUrl} /></div>`)
-    if (typeof $('#modaleFileAdmin1').modal === 'function') $('#modaleFileAdmin1').modal('show')
+    $('#modaleFileAdmin1')
+        .find(".modal-body")
+        .html(`<div style='text-align: center;'><img width=${imgWidth} src=${billUrl} /></div>`)
+    if (typeof $('#modaleFileAdmin1').modal === 'function')
+      $('#modaleFileAdmin1').modal('show')
   }
 
   handleEditTicket(e, bill, bills) {
@@ -145,8 +145,9 @@ export default class {
       this.counter ++
     }
 
-    bills.forEach(bill => {
-      $(`#open-bill${bill.id}`).click((e) => this.handleEditTicket(e, bill, bills))
+    filteredBills(bills, getStatus(this.index)).forEach(bill => {
+      $(`#open-bill${bill.id}`).click((e) =>
+          this.handleEditTicket(e, bill, bills))
     })
 
     return bills
